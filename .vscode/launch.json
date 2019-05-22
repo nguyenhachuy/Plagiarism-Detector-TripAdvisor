@@ -5,7 +5,7 @@
             "name": "CodeLens (Launch) - PlagiarismDetector",
             "request": "launch",
             "mainClass": "PlagiarismDetector",
-            "args": "test-dict.txt test-file1.txt test-file2.txt"
+            "args": "test-dict.txt test-file3.txt test-file4.txt"
         }
     ]
 }
