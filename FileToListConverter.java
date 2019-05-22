@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FileToListConverter implements TextLoaderInterface {
+public class FileToListConverter implements TextLoader {
     public List<String> convertFileToList(String filename) {
 		List<String> list = new ArrayList<>();
 

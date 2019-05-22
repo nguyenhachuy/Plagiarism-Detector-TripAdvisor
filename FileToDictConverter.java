@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class FileToDictConverter implements DictLoaderInterface<String, Integer> {
+public class FileToDictConverter implements DictLoader<String, Integer> {
 	public Map<String, Integer> convertFileToDictionary(String filename) {
 		Map<String, Integer> dict = new HashMap<>();
 		int counter = 0;
