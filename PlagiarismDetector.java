@@ -18,10 +18,14 @@ public class PlagiarismDetector {
 		String file1 = args[1];
 		String file2 = args[2];
 		int tupleLength = args.length == 4 ? Integer.parseInt(args[3]) : 3;
-		Map<String, Integer> dict = convertFileToDictionary(synonyms);
-		List<String> list1 = convertFileToList(file1);
-		List<String> list2 = convertFileToList(file2);
 
+		FileToDictConverter dictConverter = new FileToDictConverter();
+		FileToListConverter listConverter = new FileToListConverter();
+
+		Map<String, Integer> dict = dictConverter.convertFileToDictionary(synonyms);
+		List<String> list1 = listConverter.convertFileToList(file1);
+		List<String> list2 = listConverter.convertFileToList(file2);
+		
 		float result = getPlagiarismScore(dict, list1, list2, tupleLength);
 		String resultInPercent = convertToPercentage(result);
 		System.out.println(resultInPercent);
