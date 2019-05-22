@@ -4,53 +4,36 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.text.DecimalFormat;
+import java.math.RoundingMode;
 
 public class PlagiarismDetector {
 	public static void main(String args[]) {
 
-		if(args == null || args.length < 3) {
+		if(args == null || args.length < 3 || args.length > 4) {
 			System.out.println("Invalid number of arguments");
 		}
 
 		String synonyms = args[0];
 		String file1 = args[1];
 		String file2 = args[2];
-		
+		int tupleLength = args.length == 4 ? Integer.parseInt(args[3]) : 3;
 		Map<String, Integer> dict = convertFileToDictionary(synonyms);
 		List<String> list1 = convertFileToList(file1);
 		List<String> list2 = convertFileToList(file2);
 
-
-		int i = 0;
-		int j = 2;
-		int res = 0;
-		int list1Tuples = 0;
-		while (j < list1.size()) {
-			list1Tuples++;
-			int k = 0;
-			int l = 2;
-			while(l < list2.size()) {
-				boolean sameTuple = compareTuple(dict, list1, list2, i,j,k,l);
-				if(sameTuple) {
-					res += 1;
-				}
-				k++;
-				l++;
-			}
-			i++;
-			j++;
-		}
-
-		System.out.println(res/list1Tuples);
+		float result = getPlagiarismScore(dict, list1, list2, tupleLength);
+		String resultInPercent = convertToPercentage(result);
+		System.out.println(resultInPercent);
 
 		//Read both files
 
 	}
 
-	public static boolean compareTuple(Map<String, Integer> dict, List<String> list1, List<String> list2, int i, int j, int k, int l) {
+	public static boolean compareTuple(Map<String, Integer> dict, List<String> list1, List<String> list2, int index1, int index2, int tupleLength) {
 		boolean match = true;
-		for(int c = 0; c <= 2; c++) {
-			match = match && (dict.get(list1.get(i + c)) == dict.get(list2.get(k + c)));
+		for(int c = 0; c <= tupleLength; c++) {
+			match = match && (dict.get(list1.get(index1 + c)) == dict.get(list2.get(index2 + c)));
 			if (!match) {
 				return match;
 			}
@@ -73,6 +56,7 @@ public class PlagiarismDetector {
 		}
 		return list;
 	}
+
 	public static Map<String, Integer> convertFileToDictionary(String filename) {
 		Map<String, Integer> dict = new HashMap<>();
 		int counter = 0;
@@ -93,5 +77,41 @@ public class PlagiarismDetector {
 		}
 
 		return dict;
+	}
+
+	public static float getPlagiarismScore(Map<String, Integer> dict, List<String> list1, List<String> list2, int tupleLength) {
+		//i is starting index of list1's tuple, j is the ending index
+		int i = 0;
+		int j = i + tupleLength;
+				
+		//k is starting index of list2's tuple, l is the ending index
+		int k = 0;
+		int l = k + tupleLength;
+
+		int score = 0;
+		int numberOfTuples = 0;
+		int list1Size = list1.size();
+		int list2Size = list2.size();
+		while (j < list1Size) {
+			numberOfTuples++;
+			while(l < list2Size) {
+				boolean sameTuple = compareTuple(dict, list1, list2, i, k, tupleLength);
+				if(sameTuple) {
+					score += 1;
+				}
+				k++;
+				l++;
+			}
+			i++;
+			j++;
+		}
+
+		return score/numberOfTuples;
+	}
+
+	public static String convertToPercentage(float score) {
+		DecimalFormat df = new DecimalFormat("#%");
+		df.setRoundingMode(RoundingMode.HALF_EVEN);
+		return df.format(score);
 	}
 }
