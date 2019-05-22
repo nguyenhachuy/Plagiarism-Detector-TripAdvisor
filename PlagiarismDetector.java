@@ -28,33 +28,12 @@ public class PlagiarismDetector {
 
 
 		String file1 = args[1];
-		List<String> list1 = new ArrayList<>();
-
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(file1))) {
-			
-			String line = "";
-			while ( (line = br.readLine()) != null) {
-				list1.addAll(Arrays.asList(line.toLowerCase().split(" ")));
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		List<String> list1 = convertFileToList(file1);
 		
 		String file2 = args[2];
 
-		List<String> list2 = new ArrayList<>();
+		List<String> list2 = convertFileToList(file2);
 
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(file2))) {
-			
-			String line = "";
-			while ( (line = br.readLine()) != null) {
-				list2.addAll(Arrays.asList(line.toLowerCase().split(" ")));
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		int i = 0;
 		int j = 2;
@@ -91,5 +70,21 @@ public class PlagiarismDetector {
 			}
 		}
 		return match;
+	}
+
+	public static List<String> convertFileToList(String filename) {
+		List<String> list = new ArrayList<>();
+
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(filename))) {
+			
+			String line = "";
+			while ( (line = br.readLine()) != null) {
+				list.addAll(Arrays.asList(line.toLowerCase().split(" ")));
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
