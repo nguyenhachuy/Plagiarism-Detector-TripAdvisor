@@ -31,12 +31,14 @@ public class PlagiarismDetector {
 		String resultInPercent = convertToPercentage(result);
 		System.out.println(resultInPercent);
 
-		//Read both files
 
 	}
 
 	//Helper method to format string
 	public static String convertToPercentage(float score) {
+		if(score < 0) {
+			return "Plagiarism Algorithm has failed";
+		}
 		DecimalFormat df = new DecimalFormat("#%");
 		return df.format(score);
 	}

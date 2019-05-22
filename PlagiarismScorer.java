@@ -2,6 +2,10 @@ import java.util.*;
 
 public class PlagiarismScorer implements PlagiarismStrategy {
     public float getPlagiarismScore(Map<String, Integer> dict, List<String> list1, List<String> list2, int tupleLength) {
+		//Invalid tuple length, return -1 by default
+		if(tupleLength == 0) {
+			return -1;
+		}
 		//i is starting index of list1's tuple, j is the ending index
 		int i = 0;
 		int j = i + tupleLength - 1;
