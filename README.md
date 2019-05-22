@@ -23,3 +23,4 @@ This project was done in limited time due to important exams. So it is not perfe
 -  Improve naming convention . 
 -  Write more tests/Handle edge cases . 
 -  Optimize space and time of scoring strategy . 
+-  Use JUnit . 
