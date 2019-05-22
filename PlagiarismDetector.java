@@ -7,31 +7,17 @@ import java.util.stream.Collectors;
 
 public class PlagiarismDetector {
 	public static void main(String args[]) {
-		String synonyms = args[0];
-		Map<String, Integer> dict = new HashMap<>();
-		int counter = 0;
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(synonyms))) {
 
-			//br returns as stream and convert it into a List
-			String line = "";
-			while ( (line = br.readLine()) != null) {
-				String[] words = line.toLowerCase().split(" ");
-				for (String w : words) {
-					dict.put(w, counter);
-				}
-				counter++;
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(args == null || args.length < 3) {
+			System.out.println("Invalid number of arguments");
 		}
 
-
+		String synonyms = args[0];
 		String file1 = args[1];
-		List<String> list1 = convertFileToList(file1);
-		
 		String file2 = args[2];
-
+		
+		Map<String, Integer> dict = convertFileToDictionary(synonyms);
+		List<String> list1 = convertFileToList(file1);
 		List<String> list2 = convertFileToList(file2);
 
 
@@ -86,5 +72,26 @@ public class PlagiarismDetector {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	public static Map<String, Integer> convertFileToDictionary(String filename) {
+		Map<String, Integer> dict = new HashMap<>();
+		int counter = 0;
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(filename))) {
+
+			//br returns as stream and convert it into a List
+			String line = "";
+			while ( (line = br.readLine()) != null) {
+				String[] words = line.toLowerCase().split(" ");
+				for (String w : words) {
+					dict.put(w, counter);
+				}
+				counter++;
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return dict;
 	}
 }
